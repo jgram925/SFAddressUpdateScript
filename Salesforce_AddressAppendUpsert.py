@@ -54,7 +54,7 @@ def modify_and_split_csv(input_file, output_prefix, max_records_per_file=2000):
                 current_file_index += 1
                 current_records_count = 0
 
-# Example usage
+# Update input/output paths as needed
 input_file_path = 'C:\\Users\\jgram\\OneDrive\\Desktop\\Feb24_AddressAppend.csv'
 output_file_prefix = 'C:\\Users\\jgram\\OneDrive\\Desktop\\output'
 modify_and_split_csv(input_file_path, output_file_prefix)
