@@ -4,6 +4,7 @@ def modify_and_split_csv(input_file, output_prefix, max_records_per_file=2000):
 
         header = lines[0].strip().split(',')
         modified_header = [header[i] for i in range(len(header)) if i not in [1, 2, 7]]
+        modified_header.append("Country")
 
         current_file_index = 1
         current_records_count = 0
@@ -13,7 +14,7 @@ def modify_and_split_csv(input_file, output_prefix, max_records_per_file=2000):
 
             # Capitalize columns d and e
             row[3] = row[3].title()
-            row[4] = row[4].title()
+            row[4] = row[4].title()            
 
             # Convert state abbreviation to state name
             state_abbreviations = {
@@ -32,8 +33,10 @@ def modify_and_split_csv(input_file, output_prefix, max_records_per_file=2000):
 
             # Combine columns g and h with a dash in between
             combined_g_h = f'{row[6]}-{row[7]}'
+            country = 'United States'
             row = [row[i] for i in range(len(row)) if i not in [1, 2, 6, 7]]
             row.append(combined_g_h)
+            row.append(country)
 
             # Write the modified row to the current output file
             if current_records_count == 0:
@@ -51,7 +54,7 @@ def modify_and_split_csv(input_file, output_prefix, max_records_per_file=2000):
                 current_file_index += 1
                 current_records_count = 0
 
-# Modify to change paths of input/output files
+# Example usage
 input_file_path = 'C:\\Users\\jgram\\OneDrive\\Desktop\\Feb24_AddressAppend.csv'
 output_file_prefix = 'C:\\Users\\jgram\\OneDrive\\Desktop\\output'
 modify_and_split_csv(input_file_path, output_file_prefix)
