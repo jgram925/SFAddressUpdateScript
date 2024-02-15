@@ -2,9 +2,7 @@ def modify_and_split_csv(input_file, output_prefix, max_records_per_file=2000):
     with open(input_file, 'r') as infile:
         lines = infile.readlines()
 
-        header = lines[0].strip().split(',')
-        modified_header = [header[i] for i in range(len(header)) if i not in [1, 2, 7]]
-        modified_header.append("Country")
+        header = ["Id", "BillingStreet", "BillingCity", "BillingState", "BillingPostalCode", "BillingCountry"]
 
         current_file_index = 1
         current_records_count = 0
@@ -19,8 +17,8 @@ def modify_and_split_csv(input_file, output_prefix, max_records_per_file=2000):
             # Convert state abbreviation to state name
             state_abbreviations = {
                 'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas', 'CA': 'California',
-                'CO': 'Colorado', 'CT': 'Connecticut', 'DE': 'Delaware', 'FL': 'Florida', 'GA': 'Georgia',
-                'HI': 'Hawaii', 'ID': 'Idaho', 'IL': 'Illinois', 'IN': 'Indiana', 'IA': 'Iowa', 'KS': 'Kansas',
+                'CO': 'Colorado', 'CT': 'Connecticut', 'DC': 'District of Columbia', 'DE': 'Delaware', 'FL': 'Florida', 
+                'GA': 'Georgia', 'HI': 'Hawaii', 'ID': 'Idaho', 'IL': 'Illinois', 'IN': 'Indiana', 'IA': 'Iowa', 'KS': 'Kansas',
                 'KY': 'Kentucky', 'LA': 'Louisiana', 'ME': 'Maine', 'MD': 'Maryland', 'MA': 'Massachusetts',
                 'MI': 'Michigan', 'MN': 'Minnesota', 'MS': 'Mississippi', 'MO': 'Missouri', 'MT': 'Montana',
                 'NE': 'Nebraska', 'NV': 'Nevada', 'NH': 'New Hampshire', 'NJ': 'New Jersey', 'NM': 'New Mexico',
@@ -42,7 +40,7 @@ def modify_and_split_csv(input_file, output_prefix, max_records_per_file=2000):
             if current_records_count == 0:
                 current_output_file = f"{output_prefix}_{current_file_index}.csv"
                 with open(current_output_file, 'w') as outfile:
-                    outfile.write(','.join(modified_header) + '\n')
+                    outfile.write(','.join(header) + '\n')
 
             with open(current_output_file, 'a') as outfile:
                 outfile.write(','.join(row) + '\n')
@@ -54,7 +52,7 @@ def modify_and_split_csv(input_file, output_prefix, max_records_per_file=2000):
                 current_file_index += 1
                 current_records_count = 0
 
-# Update input/output paths as needed
-input_file_path = 'C:\\Users\\jgram\\OneDrive\\Desktop\\Feb24_AddressAppend.csv'
-output_file_prefix = 'C:\\Users\\jgram\\OneDrive\\Desktop\\output'
+# Modify input/outp path as needed
+input_file_path = 'C:\\Users\\joshua.ramczyk\\Desktop\\AddressAppend.csv'
+output_file_prefix = 'C:\\Users\\joshua.ramczyk\\Desktop\\output'
 modify_and_split_csv(input_file_path, output_file_prefix)
