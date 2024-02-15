@@ -1,15 +1,13 @@
-def modify_csv(input_file, output_file):
-    with open(input_file, 'r') as infile, open(output_file, 'w') as outfile:
-        # Read lines from input file
+def modify_and_split_csv(input_file, output_prefix, max_records_per_file=2000):
+    with open(input_file, 'r') as infile:
         lines = infile.readlines()
 
-        # Modify the header
         header = lines[0].strip().split(',')
-        # Exclude column headers b, c, and f
-        modified_header = [header[i] for i in range(len(header)) if i not in [1, 2, 7]] 
-        outfile.write(','.join(modified_header) + '\n')
+        modified_header = [header[i] for i in range(len(header)) if i not in [1, 2, 7]]
 
-        # Process each row and write the modified rows to the output file
+        current_file_index = 1
+        current_records_count = 0
+
         for line in lines[1:]:
             row = line.strip().split(',')
 
@@ -34,14 +32,26 @@ def modify_csv(input_file, output_file):
 
             # Combine columns g and h with a dash in between
             combined_g_h = f'{row[6]}-{row[7]}'
-            # Exclude data from columns b, c, g, h
             row = [row[i] for i in range(len(row)) if i not in [1, 2, 6, 7]]
             row.append(combined_g_h)
 
-            # Write the modified row to the output file
-            outfile.write(','.join(row) + '\n')
+            # Write the modified row to the current output file
+            if current_records_count == 0:
+                current_output_file = f"{output_prefix}_{current_file_index}.csv"
+                with open(current_output_file, 'w') as outfile:
+                    outfile.write(','.join(modified_header) + '\n')
 
-# Modify input and output paths
+            with open(current_output_file, 'a') as outfile:
+                outfile.write(','.join(row) + '\n')
+
+            current_records_count += 1
+
+            # If the maximum records per file is reached, reset count and move to the next file
+            if current_records_count >= max_records_per_file:
+                current_file_index += 1
+                current_records_count = 0
+
+# Example usage
 input_file_path = 'C:\\Users\\jgram\\OneDrive\\Desktop\\Feb24_AddressAppend.csv'
-output_file_path = 'C:\\Users\\jgram\\OneDrive\\Desktop\\output.csv'
-modify_csv(input_file_path, output_file_path)
+output_file_prefix = 'C:\\Users\\jgram\\OneDrive\\Desktop\\output'
+modify_and_split_csv(input_file_path, output_file_prefix)
