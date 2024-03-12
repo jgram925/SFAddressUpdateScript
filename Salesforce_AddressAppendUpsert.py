@@ -30,7 +30,9 @@ def modify_and_split_csv(input_file, output_prefix, max_records_per_file=2000):
             row[5] = state_abbreviations.get(row[5], row[5])
 
             # Combine columns g and h with a dash in between
-            combined_g_h = f'{row[6]}-{row[7]}'
+            zipFive = row[6].zfill(5)
+            zipFour = row[7].zfill(4)             
+            combined_g_h = f'{zipFive}-{zipFour}'
             country = 'United States'
             row = [row[i] for i in range(len(row)) if i not in [1, 2, 6, 7]]
             row.append(combined_g_h)
